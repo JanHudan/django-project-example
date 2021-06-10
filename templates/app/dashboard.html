@@ -1,0 +1,30 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %} Dashboard | Hardware Management {% endblock %}
+
+<!-- CONTENT -->
+
+{% block content %}
+<section>
+	<h1 class="h1 mb-3 fw-normal">Hardware Management</h1>
+	<span>Hello {{ user }}</span>
+</section>
+<section>
+	<div class="row">
+		<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-3">
+			<canvas id="hardware_Status_chart" style="min-height: 250px; width: auto"></canvas>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+<!-- SCRIPTS -->
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" language="javascript" src="{% static 'js/charts.js' %}"></script>
+
+<script>
+	$(document).ready(function () {
+		hardwareStatusPieChart({{ hardwareStatusCount }});
+	});
+</script>
+{% endblock %}
