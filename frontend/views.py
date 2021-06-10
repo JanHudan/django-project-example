@@ -24,7 +24,7 @@ def SigninView(request):
 @login_required(login_url='frontend:signin')
 def LogoutView(request):
     logout(request)
-    return redirect('frontend:dashboard')
+    return redirect('frontend:signin')
 
 @login_required(login_url='frontend:signin')
 def DashboardView(request):
