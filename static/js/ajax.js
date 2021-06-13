@@ -27,7 +27,7 @@ $("#id_create_modal").click(function () {
 	});
 });
 
-$("#save_object").click(function () {
+$("#id_save_object").click(function () {
 	var endpoint = this.value;
 	var new_data = {};
 	$("#form_edit")
@@ -55,3 +55,33 @@ $("#save_object").click(function () {
 		},
 	});
 });
+
+function deleteObject(api, id) {
+	var message = "Are you sure?";
+	confirmDialog(message, function () {
+		$.ajax({
+			url: "/api/" + api.toLowerCase() + "/" + id + "/",
+			method: "DELETE",
+			headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
+			contentType: "application/json; charset=UTF-8",
+			dataType: "json",
+			success: function (data) {
+				location.href = "/" + api.toLowerCase() + "/";
+			},
+			error: function () {
+				alert("ajax delete error");
+			},
+		});
+	});
+}
+
+function confirmDialog(message, onConfirm) {
+	var fClose = function () {
+		modal.modal("hide");
+	};
+	var modal = $("#confirmModal");
+	modal.modal("show");
+	$("#confirmMessage").empty().append(message);
+	$("#confirmOk").unbind().one("click", onConfirm).one("click", fClose);
+	$("#confirmCancel").unbind().one("click", fClose);
+}

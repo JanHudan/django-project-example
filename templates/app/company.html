@@ -1,4 +1,4 @@
-{% extends 'app/base.html' %} {% load static %} {% block title %} Company | Hardware Management {% endblock %}
+{% extends 'app/base.html' %} {% load static %} {% block title %} Company {% endblock %}
 
 <!-- CONTENT -->
 
@@ -11,6 +11,8 @@
 					<tr>
 						<th>ID</th>
 						<th>Name</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 			</table>
@@ -26,22 +28,55 @@
 <script type="text/javascript" language="javascript" src="{% static 'js/ajax.js' %}"></script>
 <script>
 	$(document).ready(function () {
-		$.ajax({
-			url: "{% url 'api:CompanyAPI' %}",
-			method: "GET",
-			headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
-			contentType: "application/json; charset=UTF-8",
-			dataType: "json",
-			success: function (data) {
-				$("#table").DataTable({
-					responsive: true,
-					data: data,
-					columns: [{ data: "id" }, { data: "name" }],
-				});
+		var endpoint = "{{ label }}";
+		$(".table").dataTable({
+			sScrollX: "100%",
+			destroy: true,
+			paging: true,
+			searching: true,
+			sort: true,
+			responsive: true,
+			ajax: {
+				url: "{% url 'api:CompanyAPI' %}",
+				method: "GET",
+				headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
+				contentType: "application/json; charset=UTF-8",
+				dataType: "json",
+				dataSrc: "",
 			},
-			error: function () {
-				alert("ajax get error");
-			},
+			columns: [
+				{ data: "id" },
+				{ data: "name" },
+				{
+					data: "id",
+					render: function (data, type, full, meta) {
+						return '<a href="/company/' + data + '" class="btn btn-secondary btn-sm me-2" type="button"><span>Edit</span></a>';
+					},
+				},
+				{
+					data: "id",
+					render: function (data, type, full, meta) {
+						return (
+							'<button class="btn btn-danger btn-sm" type="button" onclick="deleteObject(\'' +
+							"{{ label }}" +
+							"'," +
+							data +
+							')"><span>Delete</span></button>'
+						);
+					},
+				},
+			],
+
+			columnDefs: [
+				{ defaultContent: "", targets: [1] },
+				{ bSortable: false, targets: [2, 3] },
+				{ searchable: false, targets: [2, 3] },
+			],
+			lengthMenu: [
+				[10, 25],
+				[10, 25],
+			],
+			pageLength: 10,
 		});
 	});
 </script>

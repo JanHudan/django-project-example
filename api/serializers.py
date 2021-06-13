@@ -16,15 +16,30 @@ class CompanySerializer(serializers.ModelSerializer):
         )
 
 class ProjectSerializer(serializers.ModelSerializer):
+    company_name= serializers.ReadOnlyField(source='company.name')
+
     class Meta:
         model = ProjectModel
         fields = (
-            '__all__'
+            'id',
+            'name',
+            'company',
+            'company_name',
         )
 
 class HardwareSerializer(serializers.ModelSerializer):
+    project_name= serializers.ReadOnlyField(source='project.name')
+    tester_name= serializers.ReadOnlyField(source='tester.name')
+
     class Meta:
         model = HardwareModel
         fields = (
-            '__all__'
+            'id',
+            'name',
+            'status',
+            'notes',
+            'project',
+            'project_name',
+            'tester',
+            'tester_name',
         )

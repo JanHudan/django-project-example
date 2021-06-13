@@ -7,9 +7,9 @@ class TesterForm(ModelForm):
         model = TesterModel
         fields = ('name', 'email', 'phone_number',)
         labels = {
-            'name': '',
-            'email': '',
-            'phone_number': '',
+            'name': 'Name',
+            'email': 'Email',
+            'phone_number': 'Phone number',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control p-2 mt-1', 'placeholder':'Name'}),
@@ -22,7 +22,7 @@ class CompanyForm(ModelForm):
         model = CompanyModel
         fields = ('name',)
         labels = {
-            'name': '',
+            'name': 'Name',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control p-2 mt-1', 'placeholder':'Name'}),
@@ -33,7 +33,7 @@ class ProjectForm(ModelForm):
         model = ProjectModel
         fields = ('name', 'company',)
         labels = {
-            'name': '',
+            'name': 'Name',
             'company': 'Select company',
         }
         widgets = {
@@ -46,11 +46,11 @@ class HardwareForm(ModelForm):
         model = HardwareModel
         fields = ('name', 'tester', 'project', 'status', 'notes',)
         labels = {
-            'name': '',
+            'name': 'Name',
             'tester': 'Select tester',
             'project': 'Select project',
             'status': 'Select status',
-            'notes': '',
+            'notes': 'Notes',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control p-2 mt-1', 'placeholder':'Name'}),

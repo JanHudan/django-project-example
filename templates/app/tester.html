@@ -1,4 +1,4 @@
-{% extends 'app/base.html' %} {% load static %} {% block title %} Tester | Hardware Management {% endblock %}
+{% extends 'app/base.html' %} {% load static %} {% block title %} Tester {% endblock %}
 
 <!-- CONTENT -->
 
@@ -13,6 +13,8 @@
 						<th>Name</th>
 						<th>Email</th>
 						<th>Phone Number</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 			</table>
@@ -28,22 +30,56 @@
 <script type="text/javascript" language="javascript" src="{% static 'js/ajax.js' %}"></script>
 <script>
 	$(document).ready(function () {
-		$.ajax({
-			url: "{% url 'api:TesterAPI' %}",
-			method: "GET",
-			headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
-			contentType: "application/json; charset=UTF-8",
-			dataType: "json",
-			success: function (data) {
-				$("#table").DataTable({
-					responsive: true,
-					data: data,
-					columns: [{ data: "id" }, { data: "name" }, { data: "email" }, { data: "phone_number" }],
-				});
+		$(".table").dataTable({
+			sScrollX: "100%",
+			destroy: true,
+			paging: true,
+			searching: true,
+			sort: true,
+			responsive: true,
+			ajax: {
+				url: "{% url 'api:TesterAPI' %}",
+				method: "GET",
+				headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
+				contentType: "application/json; charset=UTF-8",
+				dataType: "json",
+				dataSrc: "",
 			},
-			error: function () {
-				alert("ajax get error");
-			},
+			columns: [
+				{ data: "id" },
+				{ data: "name" },
+				{ data: "email" },
+				{ data: "phone_number" },
+				{
+					data: "id",
+					render: function (data, type, full, meta) {
+						return '<a href="/tester/' + data + '" class="btn btn-secondary btn-sm me-2" type="button"><span>Edit</span></a>';
+					},
+				},
+				{
+					data: "id",
+					render: function (data, type, full, meta) {
+						return (
+							'<button class="btn btn-danger btn-sm" type="button" onclick="deleteObject(\'' +
+							"{{ label }}" +
+							"'," +
+							data +
+							')"><span>Delete</span></button>'
+						);
+					},
+				},
+			],
+
+			columnDefs: [
+				{ defaultContent: "", targets: [1, 2, 3] },
+				{ bSortable: false, targets: [4, 5] },
+				{ searchable: false, targets: [4, 5] },
+			],
+			lengthMenu: [
+				[10, 25],
+				[10, 25],
+			],
+			pageLength: 10,
 		});
 	});
 </script>

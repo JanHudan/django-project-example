@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from .decorators import unauthenticated_user
 from .forms import *
-from api.models import HardwareModel
+from api.models import *
 
 @unauthenticated_user
 def SigninView(request):
@@ -50,6 +50,22 @@ def TesterView(request):
     return render(request, 'app/tester.html', context)
 
 @login_required(login_url='frontend:signin')
+def TesterDetailsView(request, pk):
+    tester = get_object_or_404(TesterModel, id=pk)
+    data = {
+        'name': tester.name,
+        'email': tester.email,
+        'phone_number': tester.phone_number,
+    }
+    form = TesterForm(initial=data)
+    context = {
+        'object_id': tester.id,
+        'label': 'Tester',
+        'form': form,
+    }
+    return render(request, 'app/testerDetails.html', context)
+
+@login_required(login_url='frontend:signin')
 def CompanyView(request):
     form = CompanyForm
     context = {
@@ -59,6 +75,20 @@ def CompanyView(request):
     return render(request, 'app/company.html', context)
 
 @login_required(login_url='frontend:signin')
+def CompanyDetailsView(request, pk):
+    company = get_object_or_404(CompanyModel, id=pk)
+    data = {
+        'name': company.name,
+    }
+    form = CompanyForm(initial=data)
+    context = {
+        'object_id': company.id,
+        'label': 'Company',
+        'form': form,
+    }
+    return render(request, 'app/companyDetails.html', context)
+
+@login_required(login_url='frontend:signin')
 def ProjectView(request):
     form = ProjectForm
     context = {
@@ -66,6 +96,21 @@ def ProjectView(request):
         'form': form,
     }
     return render(request, 'app/project.html', context)
+
+@login_required(login_url='frontend:signin')
+def ProjectDetailsView(request, pk):
+    project = get_object_or_404(ProjectModel, id=pk)
+    data = {
+        'name': project.name,
+        'company': project.company,
+    }
+    form = ProjectForm(initial=data)
+    context = {
+        'object_id': project.id,
+        'label': 'Project',
+        'form': form,
+    }
+    return render(request, 'app/projectDetails.html', context)
 
 @login_required(login_url='frontend:signin')
 def HardwareView(request):

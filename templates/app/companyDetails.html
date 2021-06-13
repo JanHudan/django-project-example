@@ -1,11 +1,11 @@
-{% extends 'app/base.html' %} {% load static %} {% block title %} Hardware {% endblock %}
+{% extends 'app/base.html' %} {% load static %} {% block title %} Company {% endblock %}
 
 <!-- CONTENT -->
 
 {% block content %} {% csrf_token %}
 <section>
 	<div class="row justify-content-md-center mt-3">
-		<h1 class="h3 mb-3 fw-normal">Hardware <span id="span_title"></span> Edit</h1>
+		<h1 class="h3 mb-3 fw-normal">Company <span id="span_title"></span> Edit</h1>
 	</div>
 	<div class="row justify-content-md-center mt-3">
 		<div id="form_edit" class="col-12 col-sm-12 col-md-12 col-lg-12">{{ form }}</div>
